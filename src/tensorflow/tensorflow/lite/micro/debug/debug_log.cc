@@ -21,9 +21,9 @@ extern "C" {
 #endif  // __cplusplus
 
 #include "tensorflow/lite/micro/debug_log.h"
-
+#include "SEGGER_RTT.h"
 void DebugLog(const char* s) {
-
+    SEGGER_RTT_WriteString(0, s);
 }
 
 #ifdef __cplusplus

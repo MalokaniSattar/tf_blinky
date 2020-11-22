@@ -100,7 +100,6 @@ void init_inference(void) {
     inference_count = 0;
 }
 
-// The name of this function is important for Arduino compatibility.
 void run_inference(void) {
   // Calculate an x value to feed into the model. We compare the current
   // inference_count to the number of inferences per cycle to determine
@@ -130,7 +129,7 @@ void run_inference(void) {
 
   // Output the results. A custom HandleOutput function can be implemented
   // for each supported hardware target.
-  HandleOutput(error_reporter, x, y);
+ // HandleOutput(error_reporter, x, y);
 
   // Increment the inference_counter, and reset it if we have reached
   // the total number per cycle

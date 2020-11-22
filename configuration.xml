@@ -77,7 +77,7 @@
     </config>
     <config id="config.bsp.ra">
       <property id="config.bsp.common.main" value="0x400"/>
-      <property id="config.bsp.common.heap" value="0"/>
+      <property id="config.bsp.common.heap" value="0x1000"/>
       <property id="config.bsp.common.vcc" value="3300"/>
       <property id="config.bsp.common.checking" value="config.bsp.common.checking.disabled"/>
       <property id="config.bsp.common.assert" value="config.bsp.common.assert.none"/>
@@ -159,6 +159,34 @@
       <description>EK-RA4W1 Board Support Files</description>
       <originalPack>Renesas.RA_board_ra4w1_ek.2.1.1.pack</originalPack>
     </component>
+    <component apiversion="" class="Heaps" condition="" group="FreeRTOS" subgroup="heap_4" variant="" vendor="AWS" version="2.1.1">
+      <description>FreeRTOS - Memory Management - Heap 4</description>
+      <originalPack>Amazon.AWS.2.1.1.pack</originalPack>
+    </component>
+    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_agt" variant="" vendor="Renesas" version="2.1.1">
+      <description>Asynchronous General Purpose Timer</description>
+      <originalPack>Renesas.RA.2.1.1.pack</originalPack>
+    </component>
+    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_flash_lp" variant="" vendor="Renesas" version="2.1.1">
+      <description>Flash Memory Low Power</description>
+      <originalPack>Renesas.RA.2.1.1.pack</originalPack>
+    </component>
+    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_gpt" variant="" vendor="Renesas" version="2.1.1">
+      <description>General PWM Timer</description>
+      <originalPack>Renesas.RA.2.1.1.pack</originalPack>
+    </component>
+    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_icu" variant="" vendor="Renesas" version="2.1.1">
+      <description>External Interrupt</description>
+      <originalPack>Renesas.RA.2.1.1.pack</originalPack>
+    </component>
+    <component apiversion="" class="Middleware" condition="" group="all" subgroup="rm_ble_abs" variant="" vendor="Renesas" version="2.1.1">
+      <description>Bluetooth Low Energy Abstraction</description>
+      <originalPack>Renesas.RA.2.1.1.pack</originalPack>
+    </component>
+    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_ble_all_freertos" variant="" vendor="Renesas" version="2.1.1">
+      <description>Renesas Bluetooth Low Energy Library</description>
+      <originalPack>Renesas.RA.2.1.1.pack</originalPack>
+    </component>
   </raComponentSelection>
   <raElcConfiguration/>
   <raIcuConfiguration/>
@@ -170,8 +198,107 @@
       <property id="module.driver.ioport.elc_trigger_ioport3" value="_disabled"/>
       <property id="module.driver.ioport.elc_trigger_ioport4" value="_disabled"/>
     </module>
+    <module id="module.driver.ble_abs_on_ble.1332341264">
+      <property id="module.driver.ble_abs.name" value="g_ble_abs0"/>
+      <property id="module.driver.ble_abs.gap_callback" value="gap_cb"/>
+      <property id="module.driver.ble_abs.vendor_specific_callback" value="vs_cb"/>
+      <property id="module.driver.ble_abs.p_pairing_parameter" value="gs_abs_pairing_param"/>
+      <property id="module.driver.ble_abs.server_cb_list" value="gs_abs_gatts_cb_param"/>
+      <property id="module.driver.ble_abs.gatt_server_init_callback_number" value="2"/>
+      <property id="module.driver.ble_abs.client_cb_list" value="gs_abs_gattc_cb_param"/>
+      <property id="module.driver.ble_abs.gatt_client_init_callback_number" value="2"/>
+      <property id="module.driver.ble_abs.p_callback" value="NULL"/>
+      <property id="module.driver.ble_abs.iocap" value="module.driver.ble_abs.iocap.3"/>
+      <property id="module.driver.ble_abs.mitm" value="module.driver.ble_abs.mitm.0"/>
+      <property id="module.driver.ble_abs.secure_connection" value="module.driver.ble_abs.secure_connection.0"/>
+      <property id="module.driver.ble_abs.local_key" value="module.driver.ble_abs.local_key.0"/>
+      <property id="module.driver.ble_abs.remote_key" value="0"/>
+      <property id="module.driver.ble_abs.key_size" value="16"/>
+    </module>
+    <module id="module.network_on_ble_a_freertos.1316665505"/>
+    <module id="module.driver.flash_on_flash_lp.1286858473">
+      <property id="module.driver.flash.name" value="g_flash0"/>
+      <property id="module.driver.flash.data_flash_bgo" value="module.driver.flash.data_flash_bgo.enabled"/>
+      <property id="module.driver.flash.p_callback" value="NULL"/>
+      <property id="module.driver.flash.ipl" value="_disabled"/>
+    </module>
+    <module id="module.driver.external_irq_on_icu.559913013">
+      <property id="module.driver.external_irq.name" value="g_external_irq0"/>
+      <property id="module.driver.external_irq.channel" value="0"/>
+      <property id="module.driver.external_irq.trigger" value="module.driver.external_irq.trigger.trig_rising"/>
+      <property id="module.driver.external_irq.filter_enable" value="module.driver.external_irq.filter_enable.false"/>
+      <property id="module.driver.external_irq.pclk_div" value="module.driver.external_irq.pclk_div.pclk_div_by_64"/>
+      <property id="module.driver.external_irq.p_callback" value="NULL"/>
+      <property id="module.driver.external_irq.ipl" value="board.icu.common.irq.priority12"/>
+    </module>
+    <module id="module.driver.timer_on_gpt.1830636508">
+      <property id="module.driver.timer.name" value="g_timer0"/>
+      <property id="module.driver.timer.channel" value="0"/>
+      <property id="module.driver.timer.mode" value="module.driver.timer.mode.mode_periodic"/>
+      <property id="module.driver.timer.period" value="0x100000000"/>
+      <property id="module.driver.timer.unit" value="module.driver.timer.unit.unit_period_raw_counts"/>
+      <property id="module.driver.timer.duty_cycle" value="50"/>
+      <property id="module.driver.timer.gtioca_output_enabled" value="module.driver.timer.gtioca_output_enabled.false"/>
+      <property id="module.driver.timer.gtioca_stop_level" value="module.driver.timer.gtioca_stop_level.pin_level_low"/>
+      <property id="module.driver.timer.gtiocb_output_enabled" value="module.driver.timer.gtiocb_output_enabled.false"/>
+      <property id="module.driver.timer.gtiocb_stop_level" value="module.driver.timer.gtiocb_stop_level.pin_level_low"/>
+      <property id="module.driver.timer.count_up_source" value=""/>
+      <property id="module.driver.timer.count_down_source" value=""/>
+      <property id="module.driver.timer.start_source" value=""/>
+      <property id="module.driver.timer.stop_source" value=""/>
+      <property id="module.driver.timer.clear_source" value=""/>
+      <property id="module.driver.timer.capture_a_source" value=""/>
+      <property id="module.driver.timer.capture_b_source" value=""/>
+      <property id="module.driver.timer.gtioca_filter" value="module.driver.timer.gtioc_filter.gtioc_filter_none"/>
+      <property id="module.driver.timer.gtiocb_filter" value="module.driver.timer.gtioc_filter.gtioc_filter_none"/>
+      <property id="module.driver.timer.p_callback" value="NULL"/>
+      <property id="module.driver.timer.ipl" value="board.icu.common.irq.priority5"/>
+      <property id="module.driver.timer.capture_a_ipl" value="_disabled"/>
+      <property id="module.driver.timer.capture_b_ipl" value="_disabled"/>
+      <property id="module.driver.timer.trough_ipl" value="_disabled"/>
+      <property id="module.driver.timer.extra" value="module.driver.timer.extra.disabled"/>
+      <property id="module.driver.timer.poeg_link" value="module.driver.timer.poeg_link.poeg_link_poeg0"/>
+      <property id="module.driver.timer.output_disable" value=""/>
+      <property id="module.driver.timer.adc_trigger" value=""/>
+      <property id="module.driver.timer.dead_time_count_up" value="0"/>
+      <property id="module.driver.timer.dead_time_count_down" value="0"/>
+      <property id="module.driver.timer.adc_a_compare_match" value="0"/>
+      <property id="module.driver.timer.adc_b_compare_match" value="0"/>
+      <property id="module.driver.timer.interrupt_skip.source" value="module.driver.timer.interrupt_skip.source.none"/>
+      <property id="module.driver.timer.interrupt_skip.count" value="module.driver.timer.interrupt_skip.count.count_0"/>
+      <property id="module.driver.timer.interrupt_skip.adc" value="module.driver.timer.interrupt_skip.adc.none"/>
+      <property id="module.driver.timer.gtioca_disable_setting" value="module.driver.timer.gtioca_disable_setting.gtioc_disable_prohibited"/>
+      <property id="module.driver.timer.gtiocb_disable_setting" value="module.driver.timer.gtiocb_disable_setting.gtioc_disable_prohibited"/>
+    </module>
+    <module id="module.driver.timer_on_agt.2142631813">
+      <property id="module.driver.timer.name" value="g_timer1"/>
+      <property id="module.driver.timer.channel" value="0"/>
+      <property id="module.driver.timer.mode" value="module.driver.timer.mode.mode_periodic"/>
+      <property id="module.driver.timer.period" value="0x10000"/>
+      <property id="module.driver.timer.unit" value="module.driver.timer.unit.unit_period_raw_counts"/>
+      <property id="module.driver.timer.duty_cycle" value="50"/>
+      <property id="module.driver.timer.count_source" value="module.driver.timer.count_source.clock_pclkb"/>
+      <property id="module.driver.timer.agtoa_output_enable" value="module.driver.timer.agtoa_output_enable.false"/>
+      <property id="module.driver.timer.agtob_output_enable" value="module.driver.timer.agtob_output_enable.false"/>
+      <property id="module.driver.timer.agto_output_enable" value="module.driver.timer.agto_output_enable.false"/>
+      <property id="module.driver.timer.measurement_mode" value="module.driver.timer.measurement_mode.measure_disabled"/>
+      <property id="module.driver.timer.agtio_filter" value="module.driver.timer.agtio_filter.agtio_filter_none"/>
+      <property id="module.driver.timer.enable_pin" value="module.driver.timer.enable_pin.enable_pin_not_used"/>
+      <property id="module.driver.timer.trigger_edge" value="module.driver.timer.trigger_edge.trigger_edge_rising"/>
+      <property id="module.driver.timer.p_callback" value="NULL"/>
+      <property id="module.driver.timer.ipl" value="board.icu.common.irq.priority5"/>
+    </module>
+    <module id="module.freertos.heap.4.1671669887"/>
     <context id="_hal.0">
       <stack module="module.driver.ioport_on_ioport.0"/>
+      <stack module="module.driver.ble_abs_on_ble.1332341264">
+        <stack module="module.network_on_ble_a_freertos.1316665505" requires="module.driver.ble_abs_on_ble.requires.ble">
+          <stack module="module.driver.flash_on_flash_lp.1286858473" requires="module.driver.ble_on_radio.requires.flash"/>
+          <stack module="module.driver.external_irq_on_icu.559913013" requires="module.driver.ble_on_radio.requires.irq"/>
+          <stack module="module.driver.timer_on_gpt.1830636508" requires="module.driver.ble_on_radio.requires.gpt"/>
+        </stack>
+        <stack module="module.driver.timer_on_agt.2142631813" requires="module.driver.ble_abs_on_ble.requires.agt"/>
+      </stack>
     </context>
     <context id="rtos.awsfreertos.thread.1277648158">
       <property id="_symbol" value="tf_thread"/>
@@ -181,9 +308,38 @@
       <property id="rtos.awsfreertos.thread.context" value="NULL"/>
       <property id="rtos.awsfreertos.thread.allocation" value="rtos.awsfreertos.thread.allocation.static"/>
       <property id="rtos.awsfreertos.thread.secure_context" value="rtos.awsfreertos.thread.secure_context.enable"/>
+      <stack module="module.freertos.heap.4.1671669887"/>
+    </context>
+    <context id="rtos.awsfreertos.thread.1628097993">
+      <property id="_symbol" value="ble_thread"/>
+      <property id="rtos.awsfreertos.thread.name" value="BLE Thread"/>
+      <property id="rtos.awsfreertos.thread.stack" value="1024"/>
+      <property id="rtos.awsfreertos.thread.priority" value="1"/>
+      <property id="rtos.awsfreertos.thread.context" value="NULL"/>
+      <property id="rtos.awsfreertos.thread.allocation" value="rtos.awsfreertos.thread.allocation.static"/>
+      <property id="rtos.awsfreertos.thread.secure_context" value="rtos.awsfreertos.thread.secure_context.enable"/>
     </context>
     <config id="config.driver.ioport">
       <property id="config.driver.ioport.checking" value="config.driver.ioport.checking.system"/>
+    </config>
+    <config id="config.driver.flash_lp">
+      <property id="config.driver.flash_lp.param_checking_enable" value="config.flash_lp.param_checking_enable.bsp"/>
+      <property id="config.driver.flash_lp.param_code_flash_programming_enable" value="config.driver.flash_lp.param_code_flash_programming_enable.disabled"/>
+      <property id="config.driver.flash_lp.param_data_flash_programming_enable" value="config.driver.flash_lp.param_data_flash_programming_enable.enabled"/>
+    </config>
+    <config id="config.driver.gpt">
+      <property id="config.driver.gpt.param_checking_enable" value="config.driver.gpt.param_checking_enable.bsp"/>
+      <property id="config.driver.gpt.output_support_enable" value="config.driver.gpt.output_support_enable.disabled"/>
+      <property id="config.driver.gpt.write_protect_enable" value="config.driver.gpt.write_protect_enable.disabled"/>
+    </config>
+    <config id="config.driver.icu">
+      <property id="config.driver.icu.param_checking_enable" value="config.driver.icu.param_checking_enable.bsp"/>
+    </config>
+    <config id="config.driver.ble_a_freertos"/>
+    <config id="config.driver.agt">
+      <property id="config.driver.agt.param_checking_enable" value="config.driver.agt.param_checking_enable.bsp"/>
+      <property id="config.driver.agt.output_support_enable" value="config.driver.agt.output_support_enable.disabled"/>
+      <property id="config.driver.agt.input_support_enable" value="config.driver.agt.input_support_enable.disabled"/>
     </config>
     <config id="config.awsfreertos.thread">
       <property id="config.awsfreertos.custom_freertosconfig" value=""/>
@@ -204,8 +360,8 @@
       <property id="config.awsfreertos.thread.configuse_16_bit_ticks" value="config.awsfreertos.thread.configuse_16_bit_ticks.disabled"/>
       <property id="config.awsfreertos.thread.configidle_should_yield" value="config.awsfreertos.thread.configidle_should_yield.enabled"/>
       <property id="config.awsfreertos.thread.configuse_task_notifications" value="config.awsfreertos.thread.configuse_task_notifications.enabled"/>
-      <property id="config.awsfreertos.thread.configuse_mutexes" value="config.awsfreertos.thread.configuse_mutexes.disabled"/>
-      <property id="config.awsfreertos.thread.configuse_recursive_mutexes" value="config.awsfreertos.thread.configuse_recursive_mutexes.disabled"/>
+      <property id="config.awsfreertos.thread.configuse_mutexes" value="config.awsfreertos.thread.configuse_mutexes.enabled"/>
+      <property id="config.awsfreertos.thread.configuse_recursive_mutexes" value="config.awsfreertos.thread.configuse_recursive_mutexes.enabled"/>
       <property id="config.awsfreertos.thread.configuse_counting_semaphores" value="config.awsfreertos.thread.configuse_counting_semaphores.enabled"/>
       <property id="config.awsfreertos.thread.configcheck_for_stack_overflow" value="config.awsfreertos.thread.configcheck_for_stack_overflow.disabled"/>
       <property id="config.awsfreertos.thread.configqueue_registry_size" value="10"/>
@@ -217,8 +373,8 @@
       <property id="config.awsfreertos.thread.configstack_depth_type" value="uint32_t"/>
       <property id="config.awsfreertos.thread.configmessage_buffer_length_type" value="size_t"/>
       <property id="config.awsfreertos.thread.configsupport_static_allocation" value="config.awsfreertos.thread.configsupport_static_allocation.enabled"/>
-      <property id="config.awsfreertos.thread.configsupport_dynamic_allocation" value="config.awsfreertos.thread.configsupport_dynamic_allocation.disabled"/>
-      <property id="config.awsfreertos.thread.configtotal_heap_size" value="0"/>
+      <property id="config.awsfreertos.thread.configsupport_dynamic_allocation" value="config.awsfreertos.thread.configsupport_dynamic_allocation.enabled"/>
+      <property id="config.awsfreertos.thread.configtotal_heap_size" value="0x1000"/>
       <property id="config.awsfreertos.thread.configapplication_allocated_heap" value="config.awsfreertos.thread.configapplication_allocated_heap.disabled"/>
       <property id="config.awsfreertos.thread.configgenerate_run_time_stats" value="config.awsfreertos.thread.configgenerate_run_time_stats.disabled"/>
       <property id="config.awsfreertos.thread.configuse_timers" value="config.awsfreertos.thread.configuse_timers.enabled"/>
@@ -241,7 +397,7 @@
       <property id="config.awsfreertos.thread.include_xtaskgetidletaskhandle" value="config.awsfreertos.thread.include_xtaskgetidletaskhandle.disabled"/>
       <property id="config.awsfreertos.thread.include_etaskgetstate" value="config.awsfreertos.thread.include_etaskgetstate.disabled"/>
       <property id="config.awsfreertos.thread.include_xeventgroupsetbitfromisr" value="config.awsfreertos.thread.include_xeventgroupsetbitfromisr.enabled"/>
-      <property id="config.awsfreertos.thread.include_xtimerpendfunctioncall" value="config.awsfreertos.thread.include_xtimerpendfunctioncall.disabled"/>
+      <property id="config.awsfreertos.thread.include_xtimerpendfunctioncall" value="config.awsfreertos.thread.include_xtimerpendfunctioncall.enabled"/>
       <property id="config.awsfreertos.thread.include_xtaskabortdelay" value="config.awsfreertos.thread.include_xtaskabortdelay.disabled"/>
       <property id="config.awsfreertos.thread.include_xtaskgethandle" value="config.awsfreertos.thread.include_xtaskgethandle.disabled"/>
       <property id="config.awsfreertos.thread.include_xtaskresumefromisr" value="config.awsfreertos.thread.include_xtaskresumefromisr.enabled"/>
@@ -249,6 +405,44 @@
       <property id="config.awsfreertos.thread.print_function" value="printf(x)"/>
       <property id="config.awsfreertos.thread.max_length" value="192"/>
       <property id="config.awsfreertos.thread.include_time_and_task" value="config.awsfreertos.thread.include_time_and_task.disabled"/>
+    </config>
+    <config id="config.driver.ble_abs">
+      <property id="config.driver.ble_abs.rf_debug_public_address" value="{0xFF,0xFF,0xFF,0x50,0x90,0x74}"/>
+      <property id="config.driver.ble_abs.rf_debug_random_address" value="{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}"/>
+      <property id="config.driver.ble_abs.rf_connection_maximum" value="7"/>
+      <property id="config.driver.ble_abs.rf_connection_data_maximum" value="251"/>
+      <property id="config.driver.ble_abs.rf_advertising_data_maximum" value="1650"/>
+      <property id="config.driver.ble_abs.rf_advertising_set_maximum" value="4"/>
+      <property id="config.driver.ble_abs.rf_periodic_sync_set_maximum" value="2"/>
+      <property id="config.driver.ble_abs.enable_secure_data" value="config.driver.ble_abs.enable_secure_data.0"/>
+      <property id="config.driver.ble_abs.secure_data_dataflash_block" value="0"/>
+      <property id="config.driver.ble_abs.remote_device_bonding_number" value="7"/>
+      <property id="config.driver.ble_abs.event_notify_connection_start" value="config.driver.ble_abs.event_notify_connection_start.0"/>
+      <property id="config.driver.ble_abs.event_notify_connection_close" value="config.driver.ble_abs.event_notify_connection_close.0"/>
+      <property id="config.driver.ble_abs.event_notify_advertising_start" value="config.driver.ble_abs.event_notify_advertising_start.0"/>
+      <property id="config.driver.ble_abs.event_notify_advertising_close" value="config.driver.ble_abs.event_notify_advertising_close.0"/>
+      <property id="config.driver.ble_abs.event_notify_scanning_start" value="config.driver.ble_abs.event_notify_scanning_start.0"/>
+      <property id="config.driver.ble_abs.event_notify_scanning_close" value="config.driver.ble_abs.event_notify_scanning_close.0"/>
+      <property id="config.driver.ble_abs.event_notify_initiating_start" value="config.driver.ble_abs.event_notify_initiating_start.0"/>
+      <property id="config.driver.ble_abs.event_notify_initiating_close" value="config.driver.ble_abs.event_notify_initiating_close.0"/>
+      <property id="config.driver.ble_abs.event_notify_deep_sleep_start" value="config.driver.ble_abs.event_notify_deep_sleep_start.0"/>
+      <property id="config.driver.ble_abs.event_notify_deep_sleep_wakeup" value="config.driver.ble_abs.event_notify_deep_sleep_wakeup.0"/>
+      <property id="config.driver.ble_abs.rf_clval" value="6"/>
+      <property id="config.driver.ble_abs.rf_dcdc_converter_enabele" value="config.driver.ble_abs.rf_dcdc_converter_enabele.0"/>
+      <property id="config.driver.ble_abs.rf_external_32k_enable" value="config.driver.ble_abs.rf_external_32k_enable.0"/>
+      <property id="config.driver.ble_abs.rf_mcu_clkout_port" value="config.driver.ble_abs.rf_mcu_clkout_port.0"/>
+      <property id="config.driver.ble_abs.rf_mcu_clkout_frequency" value="config.driver.ble_abs.rf_mcu_clkout_frequency.0"/>
+      <property id="config.driver.ble_abs.rf_sleep_clock_accuracy" value="250"/>
+      <property id="config.driver.ble_abs.rf_maximum_tx_power" value="config.driver.ble_abs.rf_maximum_tx_power.1"/>
+      <property id="config.driver.ble_abs.rf_default_tx_power" value="config.driver.ble_abs.rf_default_tx_power.0"/>
+      <property id="config.driver.ble_abs.rf_clkout_enable" value="config.driver.ble_abs.rf_clkout_enable.0"/>
+      <property id="config.driver.ble_abs.rf_deep_sleep_enable" value="config.driver.ble_abs.rf_deep_sleep_enable.1"/>
+      <property id="config.driver.ble_abs.mcu_main_clock_khz" value="8000"/>
+      <property id="config.driver.ble_abs.device_data_code_flash_block" value="255"/>
+      <property id="config.driver.ble_abs.device_data_data_flash_block" value="-1"/>
+      <property id="config.driver.ble_abs.gatt_mtu_size" value="247"/>
+      <property id="config.driver.ble_abs.timer_number_of_slot" value="10"/>
+      <property id="config.driver.ble_abs.parameter_checking_enable" value="config.driver.ble_abs.parameter_checking_enable.bsp"/>
     </config>
   </raModuleConfiguration>
   <raPinConfiguration>

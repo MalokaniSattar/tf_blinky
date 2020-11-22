@@ -53,7 +53,7 @@ FSP Configuration
     
   RA Common
     Main stack size (bytes): 0x400
-    Heap size (bytes): 0
+    Heap size (bytes): 0x1000
     MCU Vcc (mV): 3300
     Parameter checking: Disabled
     Assert Failures: Return FSP_ERR_ASSERTION
@@ -153,6 +153,64 @@ FSP Configuration
   Module "I/O Port Driver on r_ioport"
     Parameter Checking: Default (BSP)
     
+  Module "BLE Abstraction Driver on rm_ble_abs"
+    Debug Public Address: {0xFF,0xFF,0xFF,0x50,0x90,0x74}
+    Debug Random Address: {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}
+    Maximum number of connections: 7
+    Maximum connection data length: 251
+    Maximum advertising data length: 1650
+    Maximum advertising set number: 4
+    Maximum periodic sync set number.: 2
+    Store Security Data: Disable
+    Data Flash Block for Security Data: 0
+    Remote Device Bonding Number: 7
+    Connection Event Start Notify: Disable notify
+    Connection Event Close Notify: Disable notify
+    Advertising Event Start Notify: Disable notify
+    Advertising Event Close Notify: Disable notify
+    Scanning Event Start Notify: Disable notify
+    Scanning Event Close Notify: Disable notify
+    Initiating Event Start Notify: Disable notify
+    Initiating Event Close Notify: Disable notify
+    RF Deep Sleep Start Notify: Disable notify
+    RF Deep Sleep Wakeup Notify: Disable notify
+    Bluetooth dedicated clock: 6
+    DC-DC Converter: Disable DC-DC Converter
+    Slow Clock Source: Use RF_LOCO
+    MCU CLKOUT Port: P109
+    MCU CLKOUT Frequency Output: MCU CLKOUT frequency 32.768kHz
+    Sleep Clock Accuracy(SCA): 250
+    Transmission Power Maximum Value: max +4dBm
+    Transmission Power Default Value: High  0dBm(Transmission Power Maximum Value = +0dBm)  /  +4dBm(Transmission Power Maximum Value = +4dBm)
+    CLKOUT_RF Output: No output
+    RF_DEEP_SLEEP Transition: Enable
+    MCU Main Clock Frequency: 8000
+    Code Flash(ROM) Device Data Block: 255
+    Device Specific Data Flash Block: -1
+    MTU Size Configured: 247
+    Timer Slot Maximum Number: 10
+    Parameter Checking: Default (BSP)
+    
+  Module "Network Driver on r_ble_all_freertos"
+  Module "Flash Driver on r_flash_lp"
+    Parameter Checking: Default (BSP)
+    Code Flash Programming: Disabled
+    Data Flash Programming: Enabled
+    
+  Module "External IRQ Driver on r_icu"
+    Parameter Checking: Default (BSP)
+    
+  Module "Timer Driver on r_gpt"
+    Parameter Checking: Default (BSP)
+    Pin Output Support: Disabled
+    Write Protect Enable: Disabled
+    
+  Module "Timer Driver on r_agt"
+    Parameter Checking: Default (BSP)
+    Pin Output Support: Disabled
+    Pin Input Support: Disabled
+    
+  Module "Heap 4"
   FreeRTOS
     General: Custom FreeRTOSConfig.h: 
     General: Use Preemption: Enabled
@@ -172,8 +230,8 @@ FSP Configuration
     General: Use 16-bit Ticks: Disabled
     General: Idle Should Yield: Enabled
     General: Use Task Notifications: Enabled
-    General: Use Mutexes: Disabled
-    General: Use Recursive Mutexes: Disabled
+    General: Use Mutexes: Enabled
+    General: Use Recursive Mutexes: Enabled
     General: Use Counting Semaphores: Enabled
     Hooks: Check For Stack Overflow: Disabled
     General: Queue Registry Size: 10
@@ -185,8 +243,8 @@ FSP Configuration
     General: Stack Depth Type: uint32_t
     General: Message Buffer Length Type: size_t
     Memory Allocation: Support Static Allocation: Enabled
-    Memory Allocation: Support Dynamic Allocation: Disabled
-    Memory Allocation: Total Heap Size: 0
+    Memory Allocation: Support Dynamic Allocation: Enabled
+    Memory Allocation: Total Heap Size: 0x1000
     Memory Allocation: Application Allocated Heap: Disabled
     Stats: Generate Run Time Stats: Disabled
     Timers: Use Timers: Enabled
@@ -209,7 +267,7 @@ FSP Configuration
     Optional Functions: xTaskGetIdleTaskHandle() Function: Disabled
     Optional Functions: eTaskGetState() Function: Disabled
     Optional Functions: xEventGroupSetBitFromISR() Function: Enabled
-    Optional Functions: xTimerPendFunctionCall() Function: Disabled
+    Optional Functions: xTimerPendFunctionCall() Function: Enabled
     Optional Functions: xTaskAbortDelay() Function: Disabled
     Optional Functions: xTaskGetHandle() Function: Disabled
     Optional Functions: xTaskResumeFromISR() Function: Enabled
@@ -226,10 +284,111 @@ FSP Configuration
       Port 3 ELC Trigger Source: Disabled
       Port 4 ELC Trigger Source: Disabled
       
+    Instance "BLE Abstraction Driver on rm_ble_abs"
+      Name: g_ble_abs0
+      Gap callback: gap_cb
+      Vendor specific callback: vs_cb
+      Pairing parameters: gs_abs_pairing_param
+      GATT server callback parameter: gs_abs_gatts_cb_param
+      GATT server callback number: 2
+      GATT client callback parameter: gs_abs_gattc_cb_param
+      GATT client callback number: 2
+      Interrupts: Callback provided when an ISR occurs: NULL
+      IO capabilities of local device.: BLE_GAP_IOCAP_NOINPUT_NOOUTPUT
+      MITM protection policy.: BLE_GAP_SEC_MITM_BEST_EFFORT
+      Determine whether to accept only Secure Connections or not.: BLE_GAP_SC_BEST_EFFORT
+      Type of keys to be distributed from local device.: BLE_GAP_KEY_DIST_ENCKEY
+      Type of keys which local device requests a remote device to distribute.: 0
+      Maximum LTK size.: 16
+      
+      Instance "Network Driver on r_ble_all_freertos"
+        
+        Instance "g_flash0 Flash Driver on r_flash_lp"
+          Name: g_flash0
+          Data Flash Background Operation: Disabled
+          Callback: NULL
+          Flash Ready Interrupt Priority: Disabled
+          
+        Instance "g_external_irq0 External IRQ Driver on r_icu"
+          Name: g_external_irq0
+          Channel: 8
+          Trigger: Falling
+          Digital Filtering: Disabled
+          Digital Filtering Sample Clock (Only valid when Digital Filtering is Enabled): PCLK / 64
+          Callback: r_rf_ble_interrupt
+          Pin Interrupt Priority: Priority 12
+          
+        Instance "g_timer0 Timer Driver on r_gpt"
+          General: Name: g_timer0
+          General: Channel: 1
+          General: Mode: Periodic
+          General: Period: 10
+          General: Period Unit: Milliseconds
+          Output: Duty Cycle Percent (only applicable in PWM mode): 50
+          Output: GTIOCA Output Enabled: False
+          Output: GTIOCA Stop Level: Pin Level Low
+          Output: GTIOCB Output Enabled: False
+          Output: GTIOCB Stop Level: Pin Level Low
+          Input: Count Up Source: 
+          Input: Count Down Source: 
+          Input: Start Source: 
+          Input: Stop Source: 
+          Input: Clear Source: 
+          Input: Capture A Source: 
+          Input: Capture B Source: 
+          Input: Noise Filter A Sampling Clock Select: No Filter
+          Input: Noise Filter B Sampling Clock Select: No Filter
+          Interrupts: Callback: r_rf_host_timer_interrupt
+          Interrupts: Overflow/Crest Interrupt Priority: Priority 5
+          Interrupts: Capture A Interrupt Priority: Disabled
+          Interrupts: Capture B Interrupt Priority: Disabled
+          Interrupts: Trough Interrupt Priority: Disabled
+          Extra Features: Extra Features: Disabled
+          Extra Features: Output Disable: POEG Link: POEG Channel 0
+          Extra Features: Output Disable: Output Disable POEG Trigger: 
+          Extra Features: ADC Trigger: Start Event Trigger (GPTE/GPTEH only): 
+          Extra Features: Dead Time: Dead Time Count Up (Raw Counts): 0
+          Extra Features: Dead Time: Dead Time Count Down (Raw Counts) (GPTE/GPTEH only): 0
+          Extra Features: ADC Trigger (GPTE/GPTEH only): ADC A Compare Match (Raw Counts): 0
+          Extra Features: ADC Trigger (GPTE/GPTEH only): ADC B Compare Match (Raw Counts): 0
+          Extra Features: Interrupt Skipping (GPTE/GPTEH only): Interrupt to Count: None
+          Extra Features: Interrupt Skipping (GPTE/GPTEH only): Interrupt Skip Count: 0
+          Extra Features: Interrupt Skipping (GPTE/GPTEH only): Skip ADC Events: None
+          Extra Features: Output Disable: GTIOCA Disable Setting: Disable Prohibited
+          Extra Features: Output Disable: GTIOCB Disable Setting: Disable Prohibited
+          
+      Instance "g_timer1 Timer Driver on r_agt"
+        General: Name: g_timer1
+        General: Channel: 0
+        General: Mode: Periodic
+        General: Period: 0x10000
+        General: Period Unit: Raw Counts
+        Output: Duty Cycle Percent (only applicable in PWM mode): 50
+        General: Count Source: LOCO
+        Output: AGTOA Output: Disabled
+        Output: AGTOB Output: Disabled
+        Output: AGTO Output: Disabled
+        Input: Measurement Mode: Measure Disabled
+        Input: Input Filter: No Filter
+        Input: Enable Pin: Enable Pin Not Used
+        Input: Trigger Edge: Trigger Edge Rising
+        Interrupts: Callback: ble_abs_hw_timer_callback
+        Interrupts: Underflow Interrupt Priority: Priority 5
+        
   Thread "TF Thread"
     Symbol: tf_thread
     Name: TF Thread
     Stack size (bytes): 2048
+    Priority: 1
+    Thread Context: NULL
+    Memory Allocation: Static
+    Allocate Secure Context: Enable
+    
+    Instance "Heap 4"
+  Thread "BLE Thread"
+    Symbol: ble_thread
+    Name: BLE Thread
+    Stack size (bytes): 1024
     Priority: 1
     Thread Context: NULL
     Memory Allocation: Static
